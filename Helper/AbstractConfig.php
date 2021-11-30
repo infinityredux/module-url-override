@@ -41,4 +41,21 @@ abstract class AbstractConfig
         $path = implode('/', [static::$section, static::$group, $field]);
         return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
     }
+
+    /**
+     * Helper function to fetch configuration where the result should depend not
+     * just on the value of the field itself but also the 'enable' field for
+     * this section.
+     *
+     * @param string $field The boolean configuration field being accessed.
+     * @param int|string|null $storeId The store id where the configuration is
+     *  being obtained.
+     *
+     * @return bool True only if the provided field and the 'enable' field are
+     *  both true values; otherwise false;
+     */
+    protected function _isFieldEnabled(string $field, $storeId = null): bool
+    {
+        return ($this->_getConfig('enable', $storeId) and $this->_getConfig($field, $storeId));
+    }
 }

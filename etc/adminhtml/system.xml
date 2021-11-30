@@ -1,0 +1,98 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="infinityredux" translate="label" sortOrder="241">
+            <label>Infinity Redux</label>
+        </tab>
+
+        <section id="ir_url_override" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>URL Override</label>
+            <tab>infinityredux</tab>
+
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+
+                <field id="enable"
+                       translate="label,comment,tooltip"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1"
+                       canRestore="1">
+                    <label>Enable URL Override</label>
+                    <comment>Allows the full functionality of the module to be
+                        disabled temporarily (without removing it.)</comment>
+                    <tooltip>Defaults to disabled to ensure no attempt at
+                        processing anything take place before the other
+                        configuration changes are made.</tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+                <field id="categories"
+                       translate="label,comment"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1"
+                       canRestore="1">
+                    <label>Categories</label>
+                    <comment>Allows category processing specifically to be
+                        disabled without affecting other functions.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="products"
+                       translate="label,comment"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1"
+                       canRestore="1">
+                    <label>Products</label>
+                    <comment>Allows product processing specifically to be
+                        disabled without affecting other functions.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+            </group>
+
+            <group id="suffix" translate="label,comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Suffix Handling</label>
+                <comment>Configuration for how the override handles suffixes,
+                    either ignoring them completely, adding them back after
+                    Magento processing or creating secondary suffix URLs.</comment>
+
+                <field id="category_suffix"
+                       translate="label,comment"
+                       type="text"
+                       sortOrder="50"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1"
+                       canRestore="1">
+                    <label>Category Suffix</label>
+                    <comment>Suffix that may be added to category urls, or used
+                        to generate secondary URLs.</comment>
+                </field>
+                <field id="product_suffix"
+                       translate="label,comment"
+                       type="text"
+                       sortOrder="60"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1"
+                       canRestore="1">
+                    <label>Product Suffix</label>
+                    <comment>Suffix that may be added to product urls, or used
+                        to generate secondary URLs.</comment>
+                </field>
+
+            </group>
+        </section>
+    </system>
+</config>
