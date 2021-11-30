@@ -1,0 +1,8 @@
+# IDE settings folders
+.idea
+.vscode
+
+# Composer
+composer
+composer.phar
+vendor

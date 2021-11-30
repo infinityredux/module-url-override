@@ -1,0 +1,20 @@
+{
+  "name"        : "infinityredux/module-url-override",
+  "description" : "Override URL functionality to fix suffix problems.",
+  "type"        : "magento2-module",
+  "require"     : {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "magento/framework": "*"
+  },
+  "repositories": [
+    { "type": "composer", "url": "https://repo.magento.com/" }
+  ],
+  "autoload"    : {
+    "files"         : [ "registration.php" ],
+    "psr-4"         : {
+      "InfinityRedux\\UrlOverride\\": ""
+    }
+  }
+}
