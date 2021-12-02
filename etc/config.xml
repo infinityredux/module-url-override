@@ -1,0 +1,15 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ir_url_override>
+            <general>
+                <enable>0</enable>
+                <categories>1</categories>
+                <products>1</products>
+            </general>
+            <suffix>
+                <product_suffix>.html</product_suffix>
+                <category_suffix>.html</category_suffix>
+            </suffix>
+        </ir_url_override>
+    </default>
+</config>
