@@ -1,30 +1,13 @@
 <?php
 namespace InfinityRedux\UrlOverride\Console;
-use InfinityRedux\UrlOverride\Helper\CatalogSeoConfig;
-use InfinityRedux\UrlOverride\Helper\UrlOverrideGeneralConfig;
-use InfinityRedux\UrlOverride\Helper\UrlOverrideSuffixConfig;
-use Symfony\Component\Console\Command\Command;
+use Magento\Framework\App\Area;
+use Magento\Framework\Exception\LocalizedException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class RebuildAllCommand extends Command
+class RebuildAllCommand extends AbstractRebuildCommand
 {
-    private CatalogSeoConfig $seoConfig;
-    private UrlOverrideGeneralConfig $generalConfig;
-    private UrlOverrideSuffixConfig $suffixConfig;
-
-    public function __construct(CatalogSeoConfig         $seoConfig,
-                                UrlOverrideGeneralConfig $generalConfig,
-                                UrlOverrideSuffixConfig  $suffixConfig,
-                                string                   $name = null)
-    {
-        parent::__construct($name);
-        $this->seoConfig = $seoConfig;
-        $this->generalConfig = $generalConfig;
-        $this->suffixConfig = $suffixConfig;
-    }
-
     protected function configure()
     {
         $this->setName('infinityredux:url-override:rebuild:all');
@@ -47,6 +30,32 @@ class RebuildAllCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->generalConfig->isEnabled())
+        {
+            $message = 'Url override is not currently enabled.';
+            $this->handleError($message, $output);
+            return 50;
+        }
+
+        if (    !$this->generalConfig->isProductEnabled()
+            or  !$this->generalConfig->isCategoryEnabled())
+        {
+            $message = 'Updating all urls requires both product and category to be enabled.';
+            $this->handleError($message, $output);
+            return 50;
+        }
+
+        try {
+            $this->state->setAreaCode(Area::AREA_ADMINHTML);
+        }
+        catch (LocalizedException $e) {
+            $message = 'Unable to update state, before processing begins.';
+            $this->handleError($message, $output, $e);
+            return 99;
+        }
+
+
+
         return 0;
     }
 }
