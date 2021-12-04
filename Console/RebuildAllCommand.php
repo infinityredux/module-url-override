@@ -13,14 +13,8 @@ class RebuildAllCommand extends AbstractRebuildCommand
 {
     protected function configure()
     {
-        $this->setName('infinityredux:url-override:rebuild:all');
-        $this->setAliases([
-            'ir:url-override:rebuild:all',
-            'infinityredux:rebuild:all',
-            'ir:rebuild:all',
-            'infinityredux:rebuild',
-            'ir:rebuild',
-        ]);
+        $this->setName('infinityredux:rebuild:all');
+        $this->setAliases(['ir:rebuild:all']);
         $this->setDescription('Rebuild the url rewrites for products and categories.');
         $this->setHelp(
             'Performs multiple (low level) database operations to ensure ' .

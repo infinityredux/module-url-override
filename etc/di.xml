@@ -6,6 +6,12 @@
 				<item name="ir-url-rebuild-all" xsi:type="object">
 					InfinityRedux\UrlOverride\Console\RebuildAllCommand
                 </item>
+				<item name="ir-url-rebuild-categories" xsi:type="object">
+					InfinityRedux\UrlOverride\Console\RebuildCategoriesCommand
+                </item>
+				<item name="ir-url-rebuild-products" xsi:type="object">
+					InfinityRedux\UrlOverride\Console\RebuildProductsCommand
+                </item>
 			</argument>
 		</arguments>
 	</type>
