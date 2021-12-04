@@ -48,6 +48,14 @@ class RebuildAllCommand extends AbstractRebuildCommand
             return 25;
         }
 
+        if (    $this->seoConfig->isCategorySuffixActive()
+            or  $this->seoConfig->isProductSuffixActive())
+        {
+            $message = 'Magento suffix is not empty.';
+            $this->handleError($message, $output);
+            return 25;
+        }
+
         try {
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
             $connection = $this->getConnection();
