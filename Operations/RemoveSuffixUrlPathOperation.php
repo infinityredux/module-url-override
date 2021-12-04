@@ -6,7 +6,7 @@ use Magento\Catalog\Model\Category;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 
 
-class RemovePathSuffixOperation implements RebuildOperation
+class RemoveSuffixUrlPathOperation implements RebuildOperation
 {
     static public function execute(RebuildContext   $context,
                                    AdapterInterface $connection)
