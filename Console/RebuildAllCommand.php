@@ -1,9 +1,11 @@
 <?php
 namespace InfinityRedux\UrlOverride\Console;
 use Exception;
+use InfinityRedux\UrlOverride\Operations\GenerateMissingCategoryPerStoreOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveDuplicatedCategoryOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveDuplicatedProductOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveCategorySuffixInsideProductOperation;
+//use InfinityRedux\UrlOverride\Operations\RemoveObsoleteCategoryOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveSuffixUrlPathOperation;
 use Magento\Framework\App\Area;
 use Magento\Framework\Exception\LocalizedException;
@@ -69,8 +71,8 @@ class RebuildAllCommand extends AbstractRebuildCommand
         }
 
         $this->writeTitle('Rebuilding All Url Rewrites...', $output);
-        $connection->beginTransaction();
 
+        $connection->beginTransaction();
         try {
             $path           = RemoveSuffixUrlPathOperation::execute($this->context, $connection);
             $autoCategory   = RemoveCategorySuffixInsideProductOperation::execute($this->context, $connection);
@@ -96,6 +98,28 @@ class RebuildAllCommand extends AbstractRebuildCommand
             $this->handleError($message, $output, $e);
             return 99;
         }
+
+        $connection->beginTransaction();
+        try {
+//            RemoveObsoleteCategoryOperation::execute($this->context, $connection);
+            $missingCategory = GenerateMissingCategoryPerStoreOperation::execute($this->context, $connection);
+
+            $connection->commit();
+            $this->writeBlock([
+                'Processing store level redirects.',
+//                "Deleted 0 obsolete category store redirects.",
+//                "Deleted 0 obsolete product store redirects.",
+                "Created $missingCategory missing category store redirects.",
+                "Created 0 missing product store redirects.",
+            ], $output);
+        }
+        catch (Exception $e) {
+            $connection->rollBack();
+            $message = 'Error while creating new rewrites.';
+            $this->handleError($message, $output, $e);
+            return 99;
+        }
+
 
         return 0;
     }
