@@ -3,6 +3,9 @@ namespace InfinityRedux\UrlOverride\Model;
 use Magento\Catalog\Model\ResourceModel\Category\Collection as CategoryCollection;
 use /** @noinspection PhpUndefinedClassInspection */
     Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
+use /** @noinspection PhpUndefinedClassInspection */
+    Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute as AttributeResource;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -19,6 +22,7 @@ class RebuildContext
     private AttributeResource $attributeResource;
     private StoreManagerInterface $storeManager;
     private UrlRewriteCollectionFactory $rewriteCollectionFactory;
+    private ProductCollectionFactory $productCollectionFactory;
     private CategoryCollectionFactory $categoryCollectionFactory;
 
     public function __construct(AttributeResource           $attributeResource,
@@ -26,11 +30,14 @@ class RebuildContext
                                 /** @noinspection PhpUndefinedClassInspection */
                                 CategoryCollectionFactory   $categoryCollectionFactory,
                                 /** @noinspection PhpUndefinedClassInspection */
+                                ProductCollectionFactory    $productCollectionFactory,
+                                /** @noinspection PhpUndefinedClassInspection */
                                 UrlRewriteCollectionFactory $rewriteCollectionFactory)
     {
         $this->attributeResource = $attributeResource;
         $this->storeManager = $storeManager;
         $this->categoryCollectionFactory = $categoryCollectionFactory;
+        $this->productCollectionFactory = $productCollectionFactory;
         $this->rewriteCollectionFactory = $rewriteCollectionFactory;
     }
 
@@ -50,6 +57,11 @@ class RebuildContext
     public function getCategoryCollectionFactory(): CategoryCollection
     {
         return $this->categoryCollectionFactory->create();
+    }
+
+    public function getProductCollection(): ProductCollection
+    {
+        return $this->productCollectionFactory->create();
     }
 
     public function getUrlRewriteCollection(): UrlRewriteCollection
