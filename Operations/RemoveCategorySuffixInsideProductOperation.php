@@ -17,7 +17,7 @@ class RemoveCategorySuffixInsideProductOperation implements \InfinityRedux\UrlOv
 
         $result = $connection->query(
             "-- noinspection SqlNoDataSourceInspection
-            UPDATE $table
+            UPDATE IGNORE $table
             SET request_path = REPLACE(request_path, '.html/', '/')
             WHERE 
                   entity_type = '$product' 
