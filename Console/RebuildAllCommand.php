@@ -2,6 +2,7 @@
 namespace InfinityRedux\UrlOverride\Console;
 use Exception;
 use InfinityRedux\UrlOverride\Operations\GenerateMissingCategoryPerStoreOperation;
+use InfinityRedux\UrlOverride\Operations\GenerateMissingProductPerStoreOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveDuplicatedCategoryOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveDuplicatedProductOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveCategorySuffixInsideProductOperation;
@@ -103,14 +104,15 @@ class RebuildAllCommand extends AbstractRebuildCommand
         try {
 //            RemoveObsoleteCategoryOperation::execute($this->context, $connection);
             $missingCategory = GenerateMissingCategoryPerStoreOperation::execute($this->context, $connection);
+            $missingProduct = GenerateMissingProductPerStoreOperation::execute($this->context, $connection);
 
             $connection->commit();
             $this->writeBlock([
-                'Processing store level redirects.',
+                'Processing redirects per store.',
 //                "Deleted 0 obsolete category store redirects.",
 //                "Deleted 0 obsolete product store redirects.",
                 "Created $missingCategory missing category store redirects.",
-                "Created 0 missing product store redirects.",
+                "Created $missingProduct missing product store redirects.",
             ], $output);
         }
         catch (Exception $e) {
