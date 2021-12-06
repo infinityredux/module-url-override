@@ -1,6 +1,10 @@
 <?php
 namespace InfinityRedux\UrlOverride\Console;
 use Exception;
+use InfinityRedux\UrlOverride\Operations\DeleteOrphanCategoryRequestOperation;
+use InfinityRedux\UrlOverride\Operations\DeleteOrphanCategoryTargetOperation;
+use InfinityRedux\UrlOverride\Operations\DeleteOrphanProductRequestOperation;
+use InfinityRedux\UrlOverride\Operations\DeleteOrphanProductTargetOperation;
 use InfinityRedux\UrlOverride\Operations\GenerateMissingCategoryPerStoreOperation;
 use InfinityRedux\UrlOverride\Operations\GenerateMissingProductPerStoreOperation;
 use InfinityRedux\UrlOverride\Operations\RemoveDuplicatedCategoryOperation;
@@ -92,6 +96,29 @@ class RebuildAllCommand extends AbstractRebuildCommand
                 "Updated $dupCategory duplicated category rewrite records.",
                 "Updated $dupProduct duplicated product rewrite records.",
                 "Updated $inside category-prefix product redirect records.",
+            ], $output);
+        }
+        catch (Exception $e) {
+            $connection->rollBack();
+            $message = 'Error while processing existing rewrites.';
+            $this->handleError($message, $output, $e);
+            return 99;
+        }
+
+        $connection->beginTransaction();
+        try {
+            $requestCategory    = DeleteOrphanCategoryRequestOperation::execute($this->context, $connection);
+            $targetCategory     = DeleteOrphanCategoryTargetOperation::execute($this->context, $connection);
+            $requestProduct     = DeleteOrphanProductRequestOperation::execute($this->context, $connection);
+            $targetProduct      = DeleteOrphanProductTargetOperation::execute($this->context, $connection);
+
+            $connection->commit();
+            $this->writeBlock([
+                'Cleaning up duplicate and orphaned rewrites.',
+                "Removed $requestCategory category obsolete redirect request records.",
+                "Removed $targetCategory category obsolete redirect target records.",
+                "Removed $requestProduct product obsolete redirect request records.",
+                "Removed $targetProduct product obsolete redirect target records.",
             ], $output);
         }
         catch (Exception $e) {
